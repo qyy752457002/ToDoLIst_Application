@@ -1,0 +1,2 @@
+Client Side 前端/客户端: footer.ejs. header.ejs, list.ejs, style.css (HTML, CSS, JavaScript)
+Server Side 后端/服务端: app.js, date.js (Node.js, Express.js)

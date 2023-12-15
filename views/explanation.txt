@@ -1,33 +1,13 @@
-<%- include("header") -%> and <%- include("footer") -%>:
+By default, HTML forms only support GET and POST methods
 
-1. These lines include external files named "header.ejs" and "footer.ejs" respectively. 
-    The <%- include(filename) -%> syntax in EJS is used to include content from another file into the current template.
+1. <form action="/" method="post">: 
+    This form uses the POST method to submit data to the server. It's commonly used for actions that modify data on the server, such as creating or updating records.
 
-2. <body>:
-    This marks the beginning of the HTML body section.
+2. <form action="/" method="get">:
+    This form uses the GET method to submit data to the server. 
+    It's typically used for actions that retrieve data from the server and should not cause any modifications to the server's data. 
+    GET requests are also the default method for HTML forms if you don't specify the method attribute.
 
-3. <div class="box" id="heading">...</div>:
-    A <div> element with the class "box" and the id "heading". Inside, there's an <h1> tag.
-    <%= listTitle %> within the <h1> tag is an EJS syntax used to output the value of the listTitle variable.
+For other HTTP methods like DELETE, PUT, PATCH, etc., you can use workarounds like the "_method" input field and middleware libraries like "method-override" to simulate these methods with POST requests. 
+This is a common practice in web applications when you need to perform actions other than basic GET and POST operations.
 
-4. <div class="box">...</div>:
-
-    Another <div> element with the class "box". Inside, there's a loop and a form.
-    <% for(var i = 0; i < listItems.length; i++){ %> and <% } %>: These EJS tags delineate a JavaScript loop that iterates through the listItems array.
-    <div class="item">...</div>: Inside the loop, it generates a div with the class "item" for each element in the listItems array.
-    <input type="checkbox"> and <%= listItems[i] %>: Renders a checkbox input and displays the content of each listItems element within a <p> tag.
-
-5. <form class="item" action="/" method="post">...</form>:
-
-    A form element with the class "item" and some form fields.
-
-    <input type="text" name="newTodo" placeholder="New Item" autocomplete="off">: Text input field for entering a new item.
-
-    <button type="submit" name="listSubmit" value=<%= listTitle %>>+</button>: A submit button that sends the form data. 
-    The listTitle variable's value is assigned to the button's value attribute.
-
-    (When the "submit" button gets pressed, 
-    it will submit all of the data inside the form, 
-    and make the post request to the required route)
-
-6: Marks the end of the HTML body section.

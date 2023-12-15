@@ -5,8 +5,8 @@
 // express, body-parser: These are Node.js modules for handling server requests and parsing request bodies.
 // date.js: An external module (probably a custom module) for getting the current date.
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require("mongoose")
+const bodyParser = require('body-parser');
 const date = require(__dirname + '/date.js');
 const _ = require("lodash");
 
@@ -18,13 +18,15 @@ const app = express();
 // 3. View Engine and Middleware Setup:
 
 // app.set('view engine', 'ejs'): Sets EJS (Embedded JavaScript) as the view engine for rendering templates.
-// bodyParser.urlencoded() and express.static("public") are middleware functions.
 app.set('view engine', 'ejs');
+// bodyParser.urlencoded() and express.static("public") are middleware functions.
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static("public"));
+// configuring Express to serve static files from a directory named "public." 
+// This is a common setup for serving assets like HTML, CSS, JavaScript, images, and other files that don't need to be processed by the server.
+app.use(express.static("./public"));
 
-// make connection to local database
-mongoose.connect("mongodb://localhost:27017/todolistDB", {useNewUrlParser: true});
+// make connection to remote database
+mongoose.connect("mongodb+srv://Krismile:Qyy2614102@cluster0.ylvbzaw.mongodb.net/todolistDB", {useNewUrlParser: true});
 
 // establish an itemSchema
 const itemSchema = new mongoose.Schema({
@@ -55,7 +57,7 @@ const item3 = new listItem({
 })
 
 // defaultItems are arrays to store items
-const defaultItems = [item1, item2, item3];
+const defaultItems = [];
 
 const day = date.getDate();
 
@@ -126,7 +128,6 @@ app.get("/:customListName", async function(req, res){
     // Redirect to handle errors, if needed
     res.redirect("/");
   }
-
 });
 
 // app.post("/"): Handles POST requests to the root URL ("/"). 
@@ -145,16 +146,23 @@ app.post("/", async function(req, res) {
     if (listName === day) {
       await item.save();
       res.redirect("/");
+
     } else {
+
       const foundList = await customList.findOne({ name: listName });
+
       if (foundList) {
         foundList.items.push(item);
+
         await foundList.save();
+        
         res.redirect("/" + listName);
+
       } else {
         throw new Error("List not found");
       }
     }
+
   } catch (err) {
     console.log(err);
     res.redirect("/");
