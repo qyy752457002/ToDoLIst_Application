@@ -19,14 +19,21 @@ const app = express();
 
 // app.set('view engine', 'ejs'): Sets EJS (Embedded JavaScript) as the view engine for rendering templates.
 app.set('view engine', 'ejs');
+
 // bodyParser.urlencoded() and express.static("public") are middleware functions.
+
+// Configure middleware for an Express.js application using the body-parser package. 
+// This line specifically sets up body-parser to parse URL-encoded data with extended mode, allowing for richer data to be encoded in the URL.
+// When extended is set to true, body-parser allows the use of nested objects and arrays to be encoded into the URL-encoded data. 
+// This enables you to send more complex data structures through forms or requests in an Express.js application.
 app.use(bodyParser.urlencoded({extended: true}));
+
 // configuring Express to serve static files from a directory named "public." 
 // This is a common setup for serving assets like HTML, CSS, JavaScript, images, and other files that don't need to be processed by the server.
 app.use(express.static("./public"));
 
 // make connection to remote database
-mongoose.connect("mongodb+srv://Krismile:Qyy2614102@cluster0.ylvbzaw.mongodb.net/todolistDB", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://Krismile:Qyy2614102@todolistcluster.dalyaca.mongodb.net/todolistDB", {useNewUrlParser: true});
 
 // establish an itemSchema
 const itemSchema = new mongoose.Schema({
@@ -135,7 +142,9 @@ app.get("/:customListName", async function(req, res){
 // Pushes the new item to the appropriate array and redirects the user to the corresponding route.
 app.post("/", async function(req, res) {
 
+  // 对应 <input type="text" name="newTodo" placeholder="New Item" autocomplete="off">
   const itemName = req.body.newTodo;
+  // 对应 <button type="submit" name="listSubmit" value="<%= listTitle %>">+</button>
   const listName = req.body.listSubmit;
 
   const item = new listItem({
@@ -170,7 +179,10 @@ app.post("/", async function(req, res) {
 });
 
 app.post("/delete", async function(req, res) {
+
+  // 对应 <input type="checkbox" name="checkbox" value="<%= item._id %>" onChange="this.form.submit()">
   const checkedItemId = req.body.checkbox;
+  // 对应 <Input type = "hidden" name = "listname" value = "<%= listTitle %>"></input>
   const listName = req.body.listname;
 
   try {
